@@ -4,7 +4,7 @@ import sys
 from time import sleep, time
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from PyQt5 import uic, QtWidgets, QtCore
+from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from importlib_metadata import Sectioned
 from itsdangerous import TimestampSigner
 from matplotlib.pyplot import flag
@@ -13,8 +13,9 @@ from matplotlib.pyplot import flag
 #단, UI파일은 Python 코드 파일과 같은 디렉토리에 위치해야한다.
 form_class = uic.loadUiType("myeye.ui")[0]
 
+#프로그램 시작 시간
 stTime = QTime.currentTime()
-endTime = stTime
+
 timerVar = QTimer()
 stopFlag = 0 # stop btn toggle var 
 
@@ -26,7 +27,8 @@ class WindowClass(QMainWindow, form_class) :
         super().__init__()
         self.setupUi(self)
         self.Ui()
-        self.timerVar = QTimer()
+        self.timerVar = QTimer() #timer 함수 -> 프로그레스 바
+        self.progressBar.setMaximum(3) # set maximum
         self.timerVar.setInterval(1000)
         self.timerVar.timeout.connect(self.progressBarTimer)
         self.timerVar.start()
@@ -42,7 +44,30 @@ class WindowClass(QMainWindow, form_class) :
         #ProgressBar의 값이 최댓값 이상이 되면 Timer를 중단시켜 ProgressBar의 값이 더이상 증가하지 않게 합니다.
         if self.time >= self.progressBar.maximum() :
             self.timerVar.stop()
+            self.saveMyEyes()
 
+    def saveMyEyes(self):
+        box = QMessageBox()
+
+        #화면 중앙 찾기
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        
+        #이미지 설정
+        box.setWindowIcon(QtGui.QIcon('img/pepe.jpg'))
+        box.setIconPixmap(QtGui.QPixmap('img/doc.jpg'))
+        box.setWindowTitle("Warning!!")
+        box.setInformativeText("1시간이 지났습니다!!!" + "일어나서 눈 좀 쉬고\n 목 근육을 풀어주세요! ")
+        box.exec()  #박스 소환
+        box.move(qr.topLeft())   # 박스 중앙으로 이동
+
+        # 진행도 초기화
+        self.progressBar.setValue(0)
+        self.time = 0
+        self.timerVar.start()
+
+        
     
     def stopT(self):
         global stopFlag
