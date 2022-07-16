@@ -2,7 +2,7 @@
 ---
 - 눈이 너무 아파 쉴 시간을 알려주는 프로그램
   - 공부하다 공부도 안되고 눈과 목과 머리가 아퍼서 만듬
-  - pyqt5를 통해 만듬
+  - pyqt5 이용함
 
 ## 실행시
 <img width="1920" alt="image" src="https://user-images.githubusercontent.com/80192345/179270618-e4e0a915-bc6e-4bed-b026-51a3fa69203f.png">
