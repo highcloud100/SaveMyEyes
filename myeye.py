@@ -1,13 +1,8 @@
-from cProfile import label
-from cgi import print_arguments
 import sys
-from time import sleep, time
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
-from importlib_metadata import Sectioned
-from itsdangerous import TimestampSigner
-from matplotlib.pyplot import flag
+
 
 #UI파일 연결
 #단, UI파일은 Python 코드 파일과 같은 디렉토리에 위치해야한다.
@@ -28,7 +23,7 @@ class WindowClass(QMainWindow, form_class) :
         self.setupUi(self)
         self.Ui()
         self.timerVar = QTimer() #timer 함수 -> 프로그레스 바
-        self.progressBar.setMaximum(3600) # set maximum
+        self.progressBar.setMaximum(3) # set maximum
         self.timerVar.setInterval(1000)
         self.timerVar.timeout.connect(self.progressBarTimer)
         self.timerVar.start()
@@ -46,7 +41,7 @@ class WindowClass(QMainWindow, form_class) :
             self.timerVar.stop()
             self.saveMyEyes()
 
-    def saveMyEyes(self):
+    def saveMyEyes(self): #메시지 박스를 띄워줌
         box = QMessageBox()
 
         #화면 중앙 찾기
@@ -57,8 +52,12 @@ class WindowClass(QMainWindow, form_class) :
         #이미지 설정
         box.setWindowIcon(QtGui.QIcon('img/pepe.jpg'))
         box.setIconPixmap(QtGui.QPixmap('img/doc.jpg'))
+
+        #정보 표시
         box.setWindowTitle("Warning!!")
         box.setInformativeText("1시간이 지났습니다!!!" + "일어나서 눈 좀 쉬고\n 목 근육을 풀어주세요! ")
+
+        box.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint) # 화면 앞에 표시
         box.exec()  #박스 소환
         box.move(qr.topLeft())   # 박스 중앙으로 이동
 
@@ -98,7 +97,6 @@ class WindowClass(QMainWindow, form_class) :
     def position(self):
         sizeObject = QtWidgets.QDesktopWidget().screenGeometry(-1)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        
         self.setGeometry(0,0,30,sizeObject.height()-50)
         self.setWindowTitle("sdf")
 
