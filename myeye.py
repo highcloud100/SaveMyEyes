@@ -23,7 +23,7 @@ class WindowClass(QMainWindow, form_class) :
         self.setupUi(self)
         self.Ui()
         self.timerVar = QTimer() #timer 함수 -> 프로그레스 바
-        self.progressBar.setMaximum(3) # set maximum
+        self.progressBar.setMaximum(3600) # set maximum
         self.timerVar.setInterval(1000)
         self.timerVar.timeout.connect(self.progressBarTimer)
         self.timerVar.start()
